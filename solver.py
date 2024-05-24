@@ -26,9 +26,25 @@ class Solver:
             for row in range(self.sudoku.rows):
                 self.possibleNumbers[row][col] -= nums
 
+    def __sort_out_boxes(self) -> None:
+        for box_row in range(self.sudoku.box_rows):
+            for box_col in range(self.sudoku.box_cols):
+                box_top_left =      (box_row * self.sudoku.box_rows, box_col * self.sudoku.box_cols)
+                box_bottom_right =  ((box_row + 1) * self.sudoku.box_rows, (box_col + 1) * self.sudoku.box_cols)
+                
+                box = self.sudoku.grid[range(box_top_left[0], box_bottom_right[0]),:]
+                box = box[:,range(box_top_left[1], box_bottom_right[1])]
+
+                box = set(box.flatten())
+                print(box)
+                for row in range(box_top_left[0], box_bottom_right[0]):
+                    for col in range(box_top_left[1], box_bottom_right[1]):
+                        self.possibleNumbers[col][row] -= box
+
     def __sort_out_possible_numbers(self) -> None:
         self.__sort_out_rows()
         self.__sort_out_columns()
+        self.__sort_out_boxes()
 
     def __place_lonely_numbers(self) -> int:
         placed = 0
@@ -62,7 +78,7 @@ class Solver:
                 return False
 
             #Security for no endless loop
-            if iter > self.sudoku.rows * self.sudoku.cols:
+            if iter > (self.sudoku.rows * self.sudoku.cols):
                 return False
             iter += 1
         return True
