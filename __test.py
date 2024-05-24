@@ -1,8 +1,6 @@
 import numpy as np
+from collections import Counter
 
-A = "102004070890176045060000198700000926025760081900201000000097060608003000009008032"
+A = set([1])
 
-grid = np.array([int(a) for a in A])
-grid.shape = (9,9)
-
-print(len(grid[0]))
+print(A)
