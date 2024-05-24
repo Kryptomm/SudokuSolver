@@ -29,14 +29,13 @@ class Solver:
     def __sort_out_boxes(self) -> None:
         for box_row in range(self.sudoku.box_rows):
             for box_col in range(self.sudoku.box_cols):
-                box_top_left =      (box_row * self.sudoku.box_rows, box_col * self.sudoku.box_cols)
-                box_bottom_right =  ((box_row + 1) * self.sudoku.box_rows, (box_col + 1) * self.sudoku.box_cols)
+                box_top_left =      (box_row * self.sudoku.box_size[1], box_col * self.sudoku.box_size[0])
+                box_bottom_right =  ((box_row + 1) * self.sudoku.box_size[1], (box_col + 1) * self.sudoku.box_size[0])
                 
                 box = self.sudoku.grid[range(box_top_left[0], box_bottom_right[0]),:]
                 box = box[:,range(box_top_left[1], box_bottom_right[1])]
 
                 box = set(box.flatten())
-                print(box)
                 for row in range(box_top_left[0], box_bottom_right[0]):
                     for col in range(box_top_left[1], box_bottom_right[1]):
                         self.possibleNumbers[row][col] -= box
@@ -51,9 +50,10 @@ class Solver:
         for row in range(self.sudoku.rows):
             for col in range(self.sudoku.cols):
                 if len(self.possibleNumbers[row][col]) != 1: continue
-
+                
                 self.sudoku.grid[row][col] = self.possibleNumbers[row][col].pop()
                 placed += 1
+                
         return placed
 
     def __place_possible_numbers(self) -> int:
@@ -81,10 +81,16 @@ class Solver:
             if iter > (self.sudoku.rows * self.sudoku.cols):
                 return False
             iter += 1
+        print(sudoku)
         return True
 
 if __name__ == "__main__":
     grid = sudokuRequester.get_random_sudoko_difficulty("easy")
+    """grid = [
+        
+    ]"""
+    grid = "102004070890176045060000198700000926025760081900201000000097060608003000009008032"
     sudoku = Sudoku(grid)
     solver = Solver(sudoku)
     print(solver.solve())
+    
