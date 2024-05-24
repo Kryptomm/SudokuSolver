@@ -39,7 +39,7 @@ class Solver:
                 print(box)
                 for row in range(box_top_left[0], box_bottom_right[0]):
                     for col in range(box_top_left[1], box_bottom_right[1]):
-                        self.possibleNumbers[col][row] -= box
+                        self.possibleNumbers[row][col] -= box
 
     def __sort_out_possible_numbers(self) -> None:
         self.__sort_out_rows()
