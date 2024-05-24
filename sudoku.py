@@ -35,9 +35,27 @@ class Sudoku:
         for y in range(self.rows):
             for x in range(self.cols):
                 output += str(self.grid[y][x]) + " "
+                if (x + 1) % self.box_size[0] == 0 and x != (self.cols-1):
+                    output += "| "
             output += "\n" if y != 8 else ""
+            if (y + 1) % self.box_size[1] == 0 and y != (self.rows-1):
+                for b in range(self.box_cols):
+                    output += self.box_size[0] * "-" * 2
+                    if 1 <= b <= self.box_cols-2:
+                        output += "-"
+                    if b != self.box_cols - 1:
+                        output += "+"
+                output += "\n"
         return output
     
 if __name__ == "__main__":
-    grid = "102004070890176045060000198700000926025760081900201000000097060608003000009008032"
-    sudoku = Sudoku(grid)
+    grid = [
+        [1,2,3,4],
+        [5,6,7,8],
+        [1,2,3,4],
+        [5,6,7,8],
+        [1,2,3,4],
+        [5,6,7,8],
+    ]
+    sudoku = Sudoku(grid, box_size=(2,3))
+    print(sudoku)
