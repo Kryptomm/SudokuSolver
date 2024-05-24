@@ -31,7 +31,7 @@ def get_random_sudoko_difficulty(difficulty : str) -> list:
         raise Exception("Difficulty does not exist")
 
     current_dict = __read_data()
-    return random.choice(current_dict[difficulty])
+    return random.choice(current_dict[difficulty.title()])
 
 def safe_sudoku(grid : list, difficulty : str) -> None:
     #read data
