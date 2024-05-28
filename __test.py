@@ -1,24 +1,28 @@
-# Using colorama
-from colorama import Fore, Back, Style, init
-from termcolor import colored
+# Define the three sets
+set1 = {1,2,3}
+set2 = set()
+set3 = set()
 
-# Initialize colorama
-init()
+# Step 1: Find the union of all sets
+union_all = set1 | set2 | set3
 
-# Colorama examples
-print(Fore.RED + 'This is red text (colorama)')
-print(Fore.GREEN + 'This is green text (colorama)')
-print(Back.YELLOW + 'This has a yellow background (colorama)')
-print(Style.DIM + 'This is dim text (colorama)')
-print(Style.RESET_ALL + 'Back to normal text (colorama)')
+# Step 2: Find the intersection of each pair of sets
+intersection_12 = set1 & set2
+intersection_13 = set1 & set3
+intersection_23 = set2 & set3
 
-# Termcolor examples
-print(colored('This is red text (termcolor)', 'red'))
-print(colored('This is green text (termcolor)', 'green'))
-print(colored('This text is on a yellow background (termcolor)', 'white', 'on_yellow'))
-print(colored('This is blue text with underlined style (termcolor)', 'blue', attrs=['underline']))
+# Step 3: Find all numbers that are in more than one set
+common_elements = intersection_12 | intersection_13 | intersection_23
 
-# Custom combinations
-print(colored('This text is bold and red with a yellow background (termcolor)', 'red', 'on_yellow', ['bold']))
-print(colored('This text is blue and underlined (termcolor)', 'blue', attrs=['underline']))
-print(colored('This text is green with reversed colors (termcolor)', 'green', attrs=['reverse']))
+# Step 4: Subtract common elements from the union to find unique elements
+unique_elements = union_all - common_elements
+
+# Step 5: Determine which set each unique element belongs to
+unique_in_set1 = unique_elements & set1
+unique_in_set2 = unique_elements & set2
+unique_in_set3 = unique_elements & set3
+
+# Output the results
+print("Numbers only in set1:", unique_in_set1)
+print("Numbers only in set2:", unique_in_set2)
+print("Numbers only in set3:", unique_in_set3)
