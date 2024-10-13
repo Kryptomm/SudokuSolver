@@ -31,8 +31,15 @@ def unique_sets(set1, set2, set3):
 
     return unique_in_set1, unique_in_set2, unique_in_set3
 
+def count_elements(possible_numbers):
+    return sum(len(possible_numbers[row][col]) for row,col in itertools.product(INDICES, INDICES))
 
 #!GENERAL
+
+def str_to_grid(grid_Str):
+    grid = np.array([int(a) for a in grid_Str])
+    grid.shape = (9,9)
+    return np.array(grid)
 
 def print_sudoku(new_state, state_before=None, possible_nums =None) -> None:
     output = ""
@@ -104,15 +111,20 @@ def sort_out_row_implications(possible_numbers):
                     possible_numbers[other_row][other_col] -= unique_rows[unique_row]
 
 def sort_out_possible_numbers(grid, possible_numbers):
-    #rows
-    sort_out_axis(grid, possible_numbers)
-    #columns
-    sort_out_axis(grid.T, possible_numbers.T)
-    
-    sort_out_boxes(grid, possible_numbers)
-    sort_out_row_implications(possible_numbers)
-    sort_out_row_implications(possible_numbers.T)
-
+    count = count_elements(possible_numbers)
+    while True:
+        #rows
+        sort_out_axis(grid, possible_numbers)
+        #columns
+        sort_out_axis(grid.T, possible_numbers.T)
+        
+        sort_out_boxes(grid, possible_numbers)
+        sort_out_row_implications(possible_numbers)
+        sort_out_row_implications(possible_numbers.T)
+        
+        count_after = count_elements(possible_numbers)
+        if count == count_after: return
+        count = count_after
 
 #! PLACING
 
@@ -199,6 +211,7 @@ def solve(grid):
     print(f"Given Sudoku:")
     print_sudoku(grid)
     
+    copied_grid = np.copy(grid)
     while not is_solved(grid) and iter < 81:
         print(f"Iteration {iter}:")
         
@@ -216,10 +229,12 @@ def solve(grid):
             return False
         
         iter += 1
-        
+    
+    print_sudoku(grid, state_before=copied_grid)
     return True
 
 if __name__ == "__main__":
-    grid = sudokuRequester.get_random_sudoko_difficulty("medium")
-    
+    #grid = sudokuRequester.get_random_sudoko_difficulty("medium")
+    grid = str_to_grid("000007600030000901200060043009000000000050100508000002600704000780000000000009500")
+
     solve(grid)
